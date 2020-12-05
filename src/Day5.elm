@@ -3,30 +3,37 @@ module Day5 exposing (..)
 import Day5Input exposing (input)
 
 
-getNumber : ( Int, Int ) -> String -> Int
-getNumber ( min, max ) row =
+codeToNum : String -> Int
+codeToNum code =
     let
-        getLeft rest =
-            getNumber ( min, (max - min) // 2 + min ) rest
+        lower ( min, max ) rest =
+            inner ( min, (max - min) // 2 + min ) rest
 
-        getRight rest =
-            getNumber ( min + ((max - min) // 2) + 1, max ) rest
+        upper ( min, max ) rest =
+            inner ( min + ((max - min) // 2) + 1, max ) rest
+
+        inner : ( Int, Int ) -> String -> Int
+        inner range row =
+            case String.uncons row of
+                Just ( 'F', rest ) ->
+                    lower range rest
+
+                Just ( 'L', rest ) ->
+                    lower range rest
+
+                Just ( 'B', rest ) ->
+                    upper range rest
+
+                Just ( 'R', rest ) ->
+                    upper range rest
+
+                _ ->
+                    Tuple.first range
+
+        variations =
+            2 ^ String.length code - 1
     in
-    case String.uncons row of
-        Just ( 'F', rest ) ->
-            getLeft rest
-
-        Just ( 'L', rest ) ->
-            getLeft rest
-
-        Just ( 'B', rest ) ->
-            getRight rest
-
-        Just ( 'R', rest ) ->
-            getRight rest
-
-        _ ->
-            min
+    inner ( 0, variations ) code
 
 
 seatId : String -> Int
@@ -38,7 +45,7 @@ seatId s =
         col =
             String.right 3 s
     in
-    getNumber ( 0, 127 ) row * 8 + getNumber ( 0, 7 ) col
+    codeToNum row * 8 + codeToNum col
 
 
 seatIds : List Int
@@ -46,8 +53,7 @@ seatIds =
     input
         |> String.trim
         |> String.lines
-        |> List.map (\s -> String.trim s)
-        |> List.map seatId
+        |> List.map (String.trim >> seatId)
 
 
 part1 =
