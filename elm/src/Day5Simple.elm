@@ -6,8 +6,8 @@ import Day5.Input exposing (input)
 
 toSeatId : String -> Int
 toSeatId code =
-    -- We don't have to do `row * 8 + col` since this is the shift by 3 digits of the number
-    -- (they will filled after `+ col`):
+    -- We don't have to do `row * 8 + col` since `row * 8` is the same
+    -- as bit-shift by 3 digits (they will filled after `+ col`):
     -- FBFBBFF    → 0101100 → 44
     -- 0101100000 → 352 == 44 * 8
     -- FBFBBFFRLR → 0101100101 → 357 == 44 * 8
