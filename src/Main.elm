@@ -1,5 +1,14 @@
 module Main exposing (..)
 
+import Combinatorics
+
+
+permutations : List (List Int)
+permutations =
+    Combinatorics.permutationsOf [ 1, 2, 3, 4 ]
+
+
+
 -- Find the two entries that sum to 2020;
 -- what do you get if you multiply them together?
 --inputList : List String
@@ -16,15 +25,15 @@ inputList =
 part1 l answersSoFar =
     case l of
         first :: rest ->
-            case findComplement first rest of
-                Just c ->
+            case findSecondAndThird first rest of
+                Just ( f, s, t ) ->
                     let
                         _ =
-                            Debug.log "found" ( first, c, first * c )
+                            Debug.log "f, s, t" ( f, s, t )
                     in
                     case rest of
                         _ :: _ ->
-                            part1 rest (List.append answersSoFar [ first * c ])
+                            part1 rest (List.append answersSoFar [ f * s * t ])
 
                         [] ->
                             answersSoFar
@@ -36,17 +45,42 @@ part1 l answersSoFar =
             []
 
 
-findComplement first others =
+findSecondAndThird first others =
+    let
+        _ =
+            Debug.log "second" ( first, others )
+    in
     case others of
-        fo :: ro ->
-            if first + fo == 2020 then
-                Just fo
+        h :: t ->
+            if first + h < 2020 then
+                findAllThree first h t
 
             else
-                findComplement first ro
+                findSecondAndThird first t
 
         [] ->
             Nothing
+
+
+findAllThree first second others =
+    let
+        _ =
+            Debug.log "third" ( first, second, others )
+    in
+    case others of
+        h :: t ->
+            let
+                _ =
+                    Debug.log "first + second + third" ( first, second, h )
+            in
+            if first + second + h == 2020 then
+                Just ( first, second, h )
+
+            else
+                findAllThree first second t
+
+        [] ->
+            findSecondAndThird second others
 
 
 input =
