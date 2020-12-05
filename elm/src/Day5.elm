@@ -5,7 +5,10 @@ import Day5.SeatId as SeatId exposing (SeatId)
 
 
 
-{- The goal for this day is practice with opaque types and have a get familiar with the `Binary` package.
+{- The goal for this day:
+   - use opaque types;
+   - get familiar with the `Binary` package.
+
    There are simpler solutions for this puzzle in the commit history.
 -}
 
