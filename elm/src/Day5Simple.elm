@@ -1,59 +1,23 @@
 module Day5Simple exposing (..)
 
+import Binary
 import Day5.Input exposing (input)
 
 
-findIdxByCode : String -> Int
-findIdxByCode code =
-    let
-        maxIdx =
-            2 ^ String.length code - 1
-
-        findIdx : ( Int, Int ) -> String -> Int
-        findIdx range row =
-            case String.uncons row of
-                Just ( 'F', rest ) ->
-                    toLowerHalf range rest
-
-                Just ( 'L', rest ) ->
-                    toLowerHalf range rest
-
-                Just ( 'B', rest ) ->
-                    toUpperHalf range rest
-
-                Just ( 'R', rest ) ->
-                    toUpperHalf range rest
-
-                _ ->
-                    Tuple.first range
-
-        toLowerHalf ( lowest, highest ) rest =
-            let
-                newHighest =
-                    (highest - lowest) // 2 + lowest
-            in
-            findIdx ( lowest, newHighest ) rest
-
-        toUpperHalf ( lowest, highest ) rest =
-            let
-                newLowest =
-                    lowest + ((highest - lowest) // 2) + 1
-            in
-            findIdx ( newLowest, highest ) rest
-    in
-    findIdx ( 0, maxIdx ) code
-
-
-seatId : String -> Int
-seatId s =
-    let
-        row =
-            String.left 7 s
-
-        col =
-            String.right 3 s
-    in
-    findIdxByCode row * 8 + findIdxByCode col
+toSeatId : String -> Int
+toSeatId code =
+    -- We don't have to do `row * 8 + col` since this is the shift by 3 digits of the number
+    -- (they will filled after `+ col`):
+    -- FBFBBFF    → 0101100 → 44
+    -- 0101100000 → 352 == 44 * 8
+    -- FBFBBFFRLR → 0101100101 → 357 == 44 * 8
+    code
+        |> String.replace "F" "0"
+        |> String.replace "B" "1"
+        |> String.replace "L" "0"
+        |> String.replace "R" "1"
+        |> Binary.fromString 1
+        |> Binary.toDecimal
 
 
 seatIds : List Int
@@ -61,7 +25,7 @@ seatIds =
     input
         |> String.trim
         |> String.lines
-        |> List.map (String.trim >> seatId)
+        |> List.map (String.trim >> toSeatId)
 
 
 part1 =
