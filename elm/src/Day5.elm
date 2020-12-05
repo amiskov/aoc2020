@@ -4,6 +4,12 @@ import Day5.Input exposing (input)
 import Day5.SeatId as SeatId exposing (SeatId)
 
 
+
+{- The goal for this day is practice with opaque types and have a get familiar with the `Binary` package.
+   There are simpler solutions for this puzzle in the commit history.
+-}
+
+
 seatIds : List SeatId
 seatIds =
     input
