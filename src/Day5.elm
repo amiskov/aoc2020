@@ -3,37 +3,45 @@ module Day5 exposing (..)
 import Day5Input exposing (input)
 
 
-codeToNum : String -> Int
-codeToNum code =
+findIdxByCode : String -> Int
+findIdxByCode code =
     let
-        lower ( min, max ) rest =
-            inner ( min, (max - min) // 2 + min ) rest
+        maxIdx =
+            2 ^ String.length code - 1
 
-        upper ( min, max ) rest =
-            inner ( min + ((max - min) // 2) + 1, max ) rest
-
-        inner : ( Int, Int ) -> String -> Int
-        inner range row =
+        findIdx : ( Int, Int ) -> String -> Int
+        findIdx range row =
             case String.uncons row of
                 Just ( 'F', rest ) ->
-                    lower range rest
+                    toLowerHalf range rest
 
                 Just ( 'L', rest ) ->
-                    lower range rest
+                    toLowerHalf range rest
 
                 Just ( 'B', rest ) ->
-                    upper range rest
+                    toUpperHalf range rest
 
                 Just ( 'R', rest ) ->
-                    upper range rest
+                    toUpperHalf range rest
 
                 _ ->
                     Tuple.first range
 
-        variations =
-            2 ^ String.length code - 1
+        toLowerHalf ( lowest, highest ) rest =
+            let
+                newHighest =
+                    (highest - lowest) // 2 + lowest
+            in
+            findIdx ( lowest, newHighest ) rest
+
+        toUpperHalf ( lowest, highest ) rest =
+            let
+                newLowest =
+                    lowest + ((highest - lowest) // 2) + 1
+            in
+            findIdx ( newLowest, highest ) rest
     in
-    inner ( 0, variations ) code
+    findIdx ( 0, maxIdx ) code
 
 
 seatId : String -> Int
@@ -45,7 +53,7 @@ seatId s =
         col =
             String.right 3 s
     in
-    codeToNum row * 8 + codeToNum col
+    findIdxByCode row * 8 + findIdxByCode col
 
 
 seatIds : List Int
@@ -63,19 +71,18 @@ part1 =
 
 part2 =
     let
-        checkInc l =
-            case l of
-                f :: s :: rest ->
-                    if s - f /= 1 then
-                        Just ( f, s )
-                            |> Debug.log "The seat is in between"
+        findMissingId ids =
+            case ids of
+                first :: second :: rest ->
+                    if second - first /= 1 then
+                        Just (first + 1)
 
                     else
-                        checkInc rest
+                        findMissingId rest
 
                 _ ->
                     Nothing
     in
     seatIds
         |> List.sort
-        |> checkInc
+        |> findMissingId
