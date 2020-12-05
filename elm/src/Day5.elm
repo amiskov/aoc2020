@@ -9,7 +9,7 @@ import Day5.SeatId as SeatId exposing (SeatId)
    - use opaque types;
    - get familiar with the `Binary` package.
 
-   There are simpler solutions for this puzzle in the commit history.
+   See `Day5Simple.elm` for simpler solution.
 -}
 
 
