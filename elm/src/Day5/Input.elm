@@ -1,4 +1,4 @@
-module Day5Input exposing (..)
+module Day5.Input exposing (input)
 
 
 input =

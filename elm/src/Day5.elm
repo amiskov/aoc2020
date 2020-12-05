@@ -1,7 +1,7 @@
 module Day5 exposing (..)
 
+import Day5.Input exposing (input)
 import Day5.SeatId as SeatId exposing (SeatId)
-import Day5Input exposing (input)
 
 
 seatIds : List SeatId
