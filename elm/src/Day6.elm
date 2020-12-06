@@ -11,7 +11,7 @@ parseInput =
 
 part1 =
     parseInput input
-        |> List.map (String.replace "\n" "" >> String.split "" >> LE.unique >> List.length)
+        |> List.map (String.replace "\n" "" >> String.toList >> LE.unique >> List.length)
         |> List.sum
 
 
@@ -35,12 +35,12 @@ countAllEqual membersAnswers =
         membersQty =
             List.length membersAnswers
 
-        isAnswerEqualForAll : ( String, List String ) -> Bool
+        isAnswerEqualForAll : ( Char, List Char ) -> Bool
         isAnswerEqualForAll ( _, others ) =
             List.length others + 1 == membersQty
     in
     membersAnswers
-        |> List.concatMap (String.split "")
+        |> List.concatMap String.toList
         -- ["a","b","a","c"]
         |> LE.gatherEquals
         -- [("a",["a"]),("b",[]),("c",[])]
