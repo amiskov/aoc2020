@@ -11,15 +11,13 @@ parseInput =
 
 part1 =
     parseInput input
-        |> List.map (String.replace "\n" "" >> String.split "" >> LE.unique)
-        |> List.map List.length
+        |> List.map (String.replace "\n" "" >> String.split "" >> LE.unique >> List.length)
         |> List.sum
 
 
 part2 =
     parseInput input
-        |> List.map (String.split "\n")
-        |> List.map countAllEqual
+        |> List.map (String.split "\n" >> countAllEqual)
         |> List.sum
 
 
