@@ -6,11 +6,11 @@ import Day5.Input exposing (input)
 
 toSeatId : String -> Int
 toSeatId code =
-    -- We don't have to do `row * 8 + col` since `row * 8` is the same
-    -- as bit-shift by 3 digits (they will be filled after `+ col`):
-    -- FBFBBFF    → 0101100 → 44
-    -- 0101100000 → 352 == 44 * 8
-    -- FBFBBFFRLR → 0101100101 → 357 == 44 * 8
+    -- We don't have to do `row * 8 + col` since `row * 8` is the same as bit-shift by 3:
+    -- FBFBBFF    → 0101100    → 44
+    --               0101100000 → 352 == 44 * 8
+    --        RLR →        101 → 5
+    -- FBFBBFFRLR → 0101100101 → 357 == 44 * 8 + 5
     code
         |> String.replace "F" "0"
         |> String.replace "B" "1"
