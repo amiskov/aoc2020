@@ -1,16 +1,10 @@
+{- Day5 "Enterprise Edition", see `Day5Simple.elm` for simpler solution. -}
+
+
 module Day5 exposing (..)
 
 import Day5.Input exposing (input)
 import Day5.SeatId as SeatId exposing (SeatId)
-
-
-
-{- The goal for this day:
-   - use opaque types;
-   - get familiar with the `Binary` package.
-
-   See `Day5Simple.elm` for simpler solution.
--}
 
 
 seatIds : List SeatId
