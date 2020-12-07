@@ -1,7 +1,8 @@
-defmodule D do
+defmodule Day7 do
   def input() do
     File.read!("inputs/day7")
     # File.read!("inputs/day7_sample")
+    # File.read!("inputs/day7_sample2")
     |> String.split("\n", trim: true)
     |> Enum.map(&parse_colors/1)
     |> Map.new()
@@ -31,20 +32,16 @@ defmodule D do
 
   def p1 do
     input()
-    |> find_all_parents(:shiny_gold)
+    |> find_parents(:shiny_gold)
     |> MapSet.size()
   end
 
-  def find_all_parents(rules, c) do
+  def find_parents(rules, c) do
     rules
-    |> Enum.filter(fn {_k, v} ->
-      # no empty rules
-      v != %{}
-    end)
-    |> fc_inenr(MapSet.new([c]), MapSet.new())
+    |> fp_inner(MapSet.new([c]), MapSet.new())
   end
 
-  def fc_inenr(rules, colors_to_find, acc) do
+  def fp_inner(rules, colors_to_find, acc) do
     if rules == [] do
       acc
     else
@@ -69,18 +66,35 @@ defmodule D do
             not MapSet.member?(parent_colors, k)
           end)
 
-        fc_inenr(new_rules, parent_colors, MapSet.union(acc, parent_colors))
+        fp_inner(new_rules, parent_colors, MapSet.union(acc, parent_colors))
       end
     end
   end
 
   def p2 do
     input()
-    |> IO.inspect()
+    |> find_children(:shiny_gold)
+    |> Enum.sum()
+  end
+
+  def find_children(rules, color) do
+    # color not counts, only children
+    fc_inner(rules, color)
+  end
+
+  def fc_inner(rules, color) do
+    Map.get(rules, color)
+    |> Enum.map(fn {cl, qty} ->
+      res = fc_inner(rules, cl)
+
+      if res == [] do
+        qty
+      else
+        qty * Enum.sum(res) + qty
+      end
+    end)
   end
 end
 
-D.p2()
-# |> IO.inspect()
-
-# (D.p1() == 246) |> IO.inspect(label: "part 1 is correct")
+(Day7.p2() == 2976) |> IO.inspect(label: "part 2 is correct")
+(Day7.p1() == 246) |> IO.inspect(label: "part 1 is correct")
