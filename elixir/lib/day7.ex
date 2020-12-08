@@ -1,4 +1,5 @@
 defmodule Day7 do
+  # TODO: take a look at :digraph
   def input() do
     File.read!("inputs/day7")
     # File.read!("inputs/day7_sample")
@@ -96,5 +97,5 @@ defmodule Day7 do
   end
 end
 
-(Day7.p2() == 2976) |> IO.inspect(label: "part 2 is correct")
-(Day7.p1() == 246) |> IO.inspect(label: "part 1 is correct")
+# (Day7.p2() == 2976) |> IO.inspect(label: "part 2 is correct")
+# (Day7.p1() == 246) |> IO.inspect(label: "part 1 is correct")
