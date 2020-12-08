@@ -1,4 +1,4 @@
-defmodule D do
+defmodule Day8 do
   def input() do
     File.read!("inputs/day8")
     # File.read!("inputs/day8_sample")
@@ -63,11 +63,11 @@ defmodule D do
       {memory, true} ->
         {memory, true}
 
-      {memory, false} ->
+      {_memory, false} ->
         idx_for_op_to_change =
           input()
           |> Enum.drop(last_replaced_index + 1)
-          |> Enum.find_index(fn {op, val} ->
+          |> Enum.find_index(fn {op, _val} ->
             op == :nop || op == :jmp
           end)
           |> Kernel.+(last_replaced_index + 1)
@@ -93,7 +93,7 @@ defmodule D do
 
           # program with replaced operation is NOT ok,
           # so run the initial program but replace :nop/:jmp operation with higher index
-          {memory, false} ->
+          {_memory, false} ->
             attempt_to_fix(input(), idx_for_op_to_change)
         end
     end
@@ -105,8 +105,8 @@ defmodule D do
   end
 end
 
-D.p1() |> IO.inspect(label: "part 1")
+# Day8.p1() |> IO.inspect(label: "part 1")
 # %{accumulator: 1489, index: 163}
 
-D.p2() |> IO.inspect(label: "part 2")
+# Day8.p2() |> IO.inspect(label: "part 2")
 # %{accumulator: 1539, index: 601}
